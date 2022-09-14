@@ -40,14 +40,15 @@ namespace Indexers_lab
         }
         public void ReplaceRandomString()
         {
-            Console.Write("Какую строчку хотите заменить -> ");
-            int numStr = Convert.ToInt32(Console.ReadLine());
-            numStr -= 1;
-            string randomStr = File.ReadLines(_path).Skip(numStr).First(); 
-            Console.WriteLine(randomStr);
-            
+ 
+            string[] arr = File.ReadAllLines(_path);
+            for (int i = 0; i < arr.Length; i++)
+            {
+                Console.WriteLine(arr[i]);
+            }
+            Console.Write("Количество строк в файле {0}.\nКакую строку заменить в файле -> ", arr.Length);
         }
-        public CustomMenu()
+    public CustomMenu()
         {
             var sw = new StreamWriter(_path, true);
 
@@ -59,6 +60,8 @@ namespace Indexers_lab
             _delegate = LastString;
             _arr.Add(_delegate);
             _delegate = RandomString;
+            _arr.Add(_delegate);
+            _delegate = ReplaceRandomString;
             _arr.Add(_delegate);
             sw.Close();
         }
@@ -72,7 +75,7 @@ namespace Indexers_lab
         static void Main()
         {
             CustomMenu myMenu = new CustomMenu();
-            myDelegate _mainDelegate = myMenu[3];
+            myDelegate _mainDelegate = myMenu[4];
             _mainDelegate();
 
             Console.ReadKey();
