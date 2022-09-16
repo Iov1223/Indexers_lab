@@ -8,19 +8,20 @@ namespace Indexers_lab
     public delegate void myDelegate();
     public class CustomMenu
     {
-        private string _path = "text.txt";
+        private string _path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        private string _fileName = "\\text.txt";
         private List<myDelegate> _arr = new List<myDelegate>();
         public void SetFileName()
         {
             Console.Write("Введите имя файла без расширения.\nВвод -> ");
-            string path = Console.ReadLine() + ".txt";
-            File.Move(_path, path);           
-        }      
+            string fileNameNew = "\\" + Console.ReadLine() + ".txt";
+            File.Move(_path + _fileName, _path + fileNameNew);
+        }
         public void WriteToFile()
         {
             Console.Write("Введите текст для добавления в файл.\nВвод -> ");
             string text = Console.ReadLine();
-            var sw = new StreamWriter(_path, true);
+            var sw = new StreamWriter(_path + _fileName, true);
             sw.WriteLine(text);
             sw.Close();
         }
@@ -28,7 +29,7 @@ namespace Indexers_lab
         {
             try
             {
-                string lastStr = File.ReadLines(_path).Last();
+                string lastStr = File.ReadLines(_path + _fileName).Last();
                 Console.WriteLine(lastStr);
             }
             catch
@@ -38,7 +39,7 @@ namespace Indexers_lab
         }
         public void RandomString()
         {
-            int count = File.ReadAllLines(_path).Length, numStr;
+            int count = File.ReadAllLines(_path + _fileName).Length, numStr;
             if (count == 0)
             {
                 Console.Write("\nКоличество строк в файле {0}.\nВыберети пункт \"Записать строку в файл\"\n", count);
@@ -64,7 +65,7 @@ namespace Indexers_lab
                         }
                     } while (!isCorrect2);
                     numStr -= 1;
-                    string randomStr = File.ReadLines(_path).Skip(numStr).First(); ;
+                    string randomStr = File.ReadLines(_path + _fileName).Skip(numStr).First(); ;
                     Console.WriteLine(randomStr);
                     isCorrect = true;
                 }
@@ -76,7 +77,7 @@ namespace Indexers_lab
         }
         public void ReplaceRandomString()
         {
-            string[] arr = File.ReadAllLines(_path);
+            string[] arr = File.ReadAllLines(_path + _fileName);
             if (arr.Length == 0)
             {
                 Console.Write("\nКоличество строк в файле {0}.\nВыберети пункт \"Записать строку в файл\".\n", arr.Length);
@@ -108,7 +109,7 @@ namespace Indexers_lab
                     } while (!isCorrect2);
                     Console.Write("Введите текст -> ");
                     arr[element - 1] = Console.ReadLine();
-                    File.WriteAllLines(_path, arr);
+                    File.WriteAllLines(_path + _fileName, arr);
                     isCorrect = true;
                 }
                 catch
@@ -119,7 +120,7 @@ namespace Indexers_lab
         }
     public CustomMenu()
         {
-            var sw = new StreamWriter(_path, true);
+            var sw = new StreamWriter(_path + _fileName, true);
             myDelegate _delegate;
             _delegate = SetFileName;
             _arr.Add(_delegate);
